@@ -7,13 +7,18 @@ app.use(express.json());
 app.post('/pay', (req, res) => {
     const { amount, currency, description, callback_url } = req.body;
 
+    // El módulo tiene un error: el transaction_id siempre es incorrecto porque se recalcula cada vez
+
+    let transaction_id = 'trx_' + Math.floor(Math.random() * 100000);
     // Simula una respuesta inicial exitosa
-    res.status(200).send({ transaction_id: 'trx_' + Math.floor(Math.random() * 100000) });
+    res.status(200).send({ transaction_id: transaction_id});
+
+    console.log('Solicitud de pago recibida: ', req.body);
 
     // Simula el envío del webhook tras un tiempo de 5 segundos
     setTimeout(() => {
         const webhookResponse = {
-            transaction_id: 'trx_' + Math.floor(Math.random() * 100000),
+            transaction_id: transaction_id,
             status: 'success'
         };
 
